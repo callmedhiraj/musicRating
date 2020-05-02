@@ -15,7 +15,7 @@ const device = () => {
   }
 };
 
-export default function Dashboard(props) {
+export default function (props) {
   const classes = useStyle();
   const [openDrawer, setOpenDrawer] = useState(device());
 
@@ -25,11 +25,11 @@ export default function Dashboard(props) {
         <LeftDrawer openDrawer={openDrawer} />
         <Navbar openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} />
         <Switch>
-          <Route path="/dashboard" exact>
-            <h1>hello</h1>
+          <Route path="/dashboard/addvideo">
+            <h1 style={{ fontSize: "150px" }}>asdasdasdas</h1>
           </Route>
-          <Route exact path="dashboard/addvideo">
-            <h1>hello</h1>
+          <Route path="/dashboard/">
+            <h1 style={{ fontSize: "150px" }}>asujanvs</h1>
           </Route>
         </Switch>
       </div>
