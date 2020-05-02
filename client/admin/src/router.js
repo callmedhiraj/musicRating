@@ -1,23 +1,14 @@
 import React, { useEffect } from "react";
 import LoginPage from "./pages/loginPage";
 import SignupPage from "./pages/SignupPage";
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Redirect,
-} from "react-router-dom";
-
-
+import { Route, Switch, Redirect } from "react-router-dom";
+import { HashLoader } from "react-spinners";
 
 import { connect } from "react-redux";
 import { fetchUser } from "./Redux";
 import Dashboard from "./pages/Dashboard";
 
-
-
 const AdminRouter = ({ userData, fetchUser }) => {
-
   const PrivateRoute = ({ component: Component, path, ...rest }) => {
     return (
       <Route
@@ -47,7 +38,7 @@ const AdminRouter = ({ userData, fetchUser }) => {
           ) : (
             <Redirect
               to={{
-                pathname: "/",
+                pathname: "/dashboard/",
                 state: { from: props.location },
               }}
             />
@@ -69,17 +60,20 @@ const AdminRouter = ({ userData, fetchUser }) => {
   }, []);
 
   return (
-      
     <>
-    { userData?.isLoading ? <h1>Loading...</h1> :
-      <Router>
+      {userData?.isLoading ? (
+        <div style={{ margin: "50%" }}>
+          {" "}
+          <HashLoader color="yellow" size={50} />{" "}
+        </div>
+      ) : (
         <Switch>
           <PublicRoute path="/signup" component={SignupPage} />
           <PublicRoute path="/login" component={LoginPage} />
-          <PrivateRoute exact path="/" component={Dashboard}/>
+          <PrivateRoute path="/dashboard" component={Dashboard} />
+          <Route path='*'><h1>adsasdas</h1></Route>
         </Switch>
-      </Router>
-       }
+      )}
     </>
   );
 };
