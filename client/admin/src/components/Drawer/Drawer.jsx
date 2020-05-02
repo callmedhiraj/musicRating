@@ -13,6 +13,8 @@ import {
 import { BsMusicNoteList } from "react-icons/bs";
 import { AiOutlineDashboard } from "react-icons/ai";
 import { Link } from "react-router-dom";
+
+
 export default function LeftDrawer(props) {
   const classes = useStyle();
   return (
@@ -35,12 +37,14 @@ export default function LeftDrawer(props) {
                 </ListItemIcon>
                 <ListItemText style={{color : 'white'}} primary='Dashboard' />
             </ListItem>
+            <Link to='/dashboard/addvideo'>
             <ListItem button >
               <ListItemIcon>
                 <AiOutlineDashboard color="white" fontSize={25} />
               </ListItemIcon>
               <ListItemText style={{color : 'white'}} primary='Dashboard' />
           </ListItem>
+          </Link>
           <ListItem button >
               
               <ListItemIcon>
