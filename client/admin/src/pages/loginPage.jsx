@@ -10,18 +10,24 @@ import {
 } from "@material-ui/core";
 import AdminSvg from "../assets/svg/admin.svg";
 import LoginForm from "../components/Forms/loginForm";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Alert } from "@material-ui/lab";
 import { ErrorOutlineSharp } from "@material-ui/icons";
+import { destroyMessage } from '../Redux/Auth/authActions'
 
 export default function LoginPage() {
+  const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
   const classes = useStyle();
+  const setClose = () => {
+    dispatch(destroyMessage());
+  }
   return (
     <>
-      <Snackbar open={auth?.message ? true : false} autoHideDuration={2000}>
+      <Snackbar anchorOrigin={{vertical: 'top', horizontal: 'center'}} open={auth?.message ? true : false} onClose={setClose} autoHideDuration={3000}>
         {auth?.message ? (
           <Alert
+          onClose={setClose}
             icon={<ErrorOutlineSharp fontSize="inherit" />}
             severity={auth?.status < 400 ? "sucess" : "warning"}
             variant="filled"

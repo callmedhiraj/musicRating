@@ -6,6 +6,7 @@ import {
   VERIFICATION_SUCCESS,
   VERIFICATION_FAILED,
   LOGOUT,
+  DESTROY_MESSAGE,
 } from "./authType";
 import { API } from "../../API_GLOBAL";
 import Axios from "axios";
@@ -48,9 +49,20 @@ export const verificationFailed = (error) => {
   };
 };
 
+export const removeMessage = () => {
+  return {
+    type: DESTROY_MESSAGE,
+  }
+}
 export const logout = () => {
   return {
   type: LOGOUT,
+  }
+}
+
+export const destroyMessage = () => {
+  return (dispatch) => {
+    dispatch(removeMessage())
   }
 }
 

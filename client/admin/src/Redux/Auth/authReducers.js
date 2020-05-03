@@ -6,6 +6,7 @@ import {
   VERIFICATION_SUCCESS,
   VERIFICATION_FAILED,
   LOGOUT,
+  DESTROY_MESSAGE,
 } from "./authType";
 const initialState = {
   verifying: false,
@@ -63,6 +64,11 @@ const authReducer = (state = initialState, action) => {
       case LOGOUT: {
         return {
           isLoggedIn: false,
+        }
+      }
+      case DESTROY_MESSAGE: {
+        return {
+          message : "",
         }
       }
     default:

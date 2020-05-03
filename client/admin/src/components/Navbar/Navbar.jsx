@@ -73,7 +73,7 @@ export default function Navbar(props) {
             {userData?.fullName}
           </Typography>
           <IconButton onClick={handleClick}>
-            <Avatar src="/broken-image.jpg" />
+            <Avatar src={userData?.avatar} />
           </IconButton>
 
           <Menu
