@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar/Navbar";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, useHistory, Redirect } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
 import clsx from "clsx";
 import LeftDrawer from "../components/Drawer/Drawer";
+import { useSelector, useDispatch } from 'react-redux';
+import { HashLoader } from "react-spinners";
 
 const device = () => {
   let x = window.matchMedia("(min-width: 700px");
@@ -15,11 +17,18 @@ const device = () => {
   }
 };
 
+
+
 export default function (props) {
+  let history = useHistory();
   const classes = useStyle();
   const [openDrawer, setOpenDrawer] = useState(device());
-
+  const auth = useSelector(state => state.auth)
+  
   return (
+    
+    !auth?.userData  ? <HashLoader color='yellow' size={45}/>
+    :
     <>
       <div className={clsx(classes.root, { [classes.shift]: openDrawer })}>
         <LeftDrawer openDrawer={openDrawer} />

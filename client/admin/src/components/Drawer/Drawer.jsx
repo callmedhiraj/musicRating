@@ -30,6 +30,7 @@ export default function LeftDrawer(props) {
           </Toolbar>
           <Divider variant="middle" />
           <List component="nav">
+          <Link to='/dashboard/'>
             <ListItem button >
               
                 <ListItemIcon>
@@ -37,12 +38,13 @@ export default function LeftDrawer(props) {
                 </ListItemIcon>
                 <ListItemText style={{color : 'white'}} primary='Dashboard' />
             </ListItem>
+            </Link>
             <Link to='/dashboard/addvideo'>
             <ListItem button >
               <ListItemIcon>
                 <AiOutlineDashboard color="white" fontSize={25} />
               </ListItemIcon>
-              <ListItemText style={{color : 'white'}} primary='Dashboard' />
+              <ListItemText style={{color : 'white'}} primary='Add Videos' />
           </ListItem>
           </Link>
           <ListItem button >

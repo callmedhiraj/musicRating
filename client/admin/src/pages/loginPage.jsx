@@ -10,7 +10,9 @@ import {
 import AdminSvg from "../assets/svg/admin.svg";
 import LoginForm from "../components/Forms/loginForm";
 
-export default function LoginPage(props) {
+
+export default function LoginPage() {
+  
   const classes = useStyle();
   return (
     <>
@@ -71,7 +73,7 @@ const useStyle = makeStyles((theme) => ({
   },
   loginForm: {
     color: "blck",
-    height: "60vh",
+    height: "inherit",
     [theme.breakpoints.down("sm")]: {
       width: "100vw",
     },

@@ -8,78 +8,95 @@ import {
   TextField,
   Button,
   Divider,
-  Fade,
+  CircularProgress,
 } from "@material-ui/core";
-import { Link } from "react-router-dom";
-import { connect } from 'react-redux';
-import { login } from '../../Redux'
-import { useForm  } from 'react-hook-form';
-const LoginForm = ({login}) => {
+import { Link, Redirect } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { login } from '../../Redux/Auth/authActions.js';
+
+
+import { useForm } from "react-hook-form";
+const LoginForm = () => {
+  const auth = useSelector(state => state.auth)
+const dispatch = useDispatch()
   const classes = useStyles();
   const { register, handleSubmit, errors } = useForm();
 
-  const setLogin = (data) => {
-    login(data)
-  }
+  const setLogin = (data)=>  {
+    dispatch(login(data));
+  };
+if(auth?.isLoggedIn ) {
+  return (
+    <Redirect to='/dashboard/' />
+  )
+}
+  console.log('here',auth);
   return (
     <>
-    <Fade in={true} timeout={1000}>
-    <div className={classes.loginForm} >
-      <Toolbar className={classes.headText}>
-        <Typography className={classes.text} variant="h4">
-          Login
-        </Typography>
-      </Toolbar>
-      <Box className={classes.formBox}>
-        <form onSubmit={handleSubmit(setLogin)} >
-          <FormGroup className={classes.inputField}>
-            <TextField
-              name="usernameOrEmail"
-              placeholder="username or email"
-              id="Username"
-              label="Username"
-              inputRef={register({required: true})}
-            />
-          </FormGroup>
-          <FormGroup className={classes.inputField}>
-            <TextField
-              name="password"
-              type="password"
-              placeholder="password"
-              id="password"
-              label="Password"
-              inputRef={register({required: true})}
-            />
-          </FormGroup>
-          <Toolbar className={classes.loginButtonHolder}>
-            <Link to="/forgot">forgot password?</Link>
-            <Button
-              className={classes.loginButton}
-              type="submit"
-              variant="contained"
-              color="primary"
-            >
-              login
-            </Button>
-          </Toolbar>
-          <Divider className={classes.Divider} />
-          <Toolbar className={classes.headText}>
-            <Link style={{textDecoration: 'none'}} to='/signup'>
-            <Button variant="text" color="secondary">
-              Create New Account
-            </Button>
-            </Link>
-          </Toolbar>
-        </form>
-      </Box>
+      <div className={classes.loginForm}>
+        <Toolbar className={classes.headText}>
+          <Typography className={classes.text} variant="h4">
+            Login
+          </Typography>
+        </Toolbar>
+        <Box className={classes.formBox}>
+          <form onSubmit={handleSubmit(setLogin)}>
+            <FormGroup className={classes.inputField}>
+              <TextField
+                name="usernameOrEmail"
+                placeholder="username or email"
+                id="Username"
+                label="Username"
+                inputRef={register({ required: true })}
+                error={!!errors.usernameOrEmail}
+                helperText={
+                  errors.usernameOrEmail ? "Enter email or username." : ""
+                }
+              />
+            </FormGroup>
+            <FormGroup className={classes.inputField}>
+              <TextField
+                name="password"
+                type="password"
+                placeholder="password"
+                id="password"
+                label="Password"
+                inputRef={register({ required: true })}
+                error={!!errors.password}
+                helperText={errors.password ? "Enter password." : ""}
+              />
+            </FormGroup>
+            <Toolbar className={classes.loginButtonHolder}>
+              <Link to="/forgot">forgot password?</Link>
+              <Button
+                className={classes.loginButton}
+                type="submit"
+                variant="contained"
+                color="primary"
+                endIcon={
+                  auth?.isLoading ? (
+                    <CircularProgress color="secondary" size={15} />
+                  ) : ''
+                }
+                disabled={auth?.isLoading}
+              >
+                login
+              </Button>
+            </Toolbar>
+            <Divider className={classes.Divider} />
+            <Toolbar className={classes.headText}>
+              <Link style={{ textDecoration: "none" }} to="/signup">
+                <Button variant="text" color="secondary">
+                  Create New Account
+                </Button>
+              </Link>
+            </Toolbar>
+          </form>
+        </Box>
       </div>
-      </Fade>
-     
-       
     </>
-    
   );
-}
+};
 
 const useStyles = makeStyles((theme) => ({
   headText: {
@@ -104,18 +121,14 @@ const useStyles = makeStyles((theme) => ({
   Divider: {
     marginTop: theme.spacing(3),
   },
+  loginForm: {
+    color: "blck",
+    height: "inherit",
+    [theme.breakpoints.down("sm")]: {
+      width: "100vw",
+    },
+  }
 }));
 
-const mapStateToProps = state => {
-  return{ 
-   userData: state.user
-  }
- }
- 
- const mapDispatchToProps = dispatch => {
-  return {
-  login: (data) => dispatch(login(data)),
-  
-  }
- }
-export default connect(mapStateToProps,mapDispatchToProps)(LoginForm);
+
+export default LoginForm;

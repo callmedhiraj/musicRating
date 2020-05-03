@@ -1,1 +1,1 @@
-export * from './userVerification/userActions';
+export * from './tokenVerification/userActions';
