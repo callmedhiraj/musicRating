@@ -90,7 +90,6 @@ export const fetchUser = (token) => {
     Axios.get(`${API}/admin/profile`)
       .then((res) => {
         const data = res.data.findUser;
-        console.log("here", data);
         dispatch(verificationSucess(data));
       })
       .catch((err) => {

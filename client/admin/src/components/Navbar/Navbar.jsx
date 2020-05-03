@@ -21,7 +21,6 @@ import { useHistory } from "react-router-dom";
 export default function Navbar(props) {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.auth.userData);
-  console.log(userData);
   const classes = useStyle();
   const [anchorEl, setAnchorEl] = useState(null);
   const handleClick = (event) => {

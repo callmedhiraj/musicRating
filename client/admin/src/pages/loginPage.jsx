@@ -6,16 +6,33 @@ import {
   makeStyles,
   Toolbar,
   Fade,
+  Snackbar,
 } from "@material-ui/core";
 import AdminSvg from "../assets/svg/admin.svg";
 import LoginForm from "../components/Forms/loginForm";
-
+import { useSelector } from "react-redux";
+import { Alert } from "@material-ui/lab";
+import { ErrorOutlineSharp } from "@material-ui/icons";
 
 export default function LoginPage() {
-  
+  const auth = useSelector((state) => state.auth);
   const classes = useStyle();
   return (
     <>
+      <Snackbar open={auth?.message ? true : false} autoHideDuration={2000}>
+        {auth?.message ? (
+          <Alert
+            icon={<ErrorOutlineSharp fontSize="inherit" />}
+            severity={auth?.status < 400 ? "sucess" : "warning"}
+            variant="filled"
+          >
+            {auth?.message}
+          </Alert>
+        ) : (
+          ""
+        )}
+      </Snackbar>
+
       <Container>
         <Paper className={classes.root} elevation={5}>
           <Grid container spacing={3}>

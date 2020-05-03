@@ -32,6 +32,7 @@ const AdminRouter = () => {
     if(!token) {
         history.push('/login')
     }
+    // eslint-disable-next-line
   },[])
 
   const PrivateRoute = ({ component: Component, path, ...rest }) => {

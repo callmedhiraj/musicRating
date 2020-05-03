@@ -14,6 +14,7 @@ const initialState = {
   userData: [],
   message: "",
   fakeToken: false,
+  status: 0,
 };
 const authReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -28,12 +29,14 @@ const authReducer = (state = initialState, action) => {
         isLoading: false,
         isLoggedIn: true,
         message: action.payload,
+        status: 200,
       };
     case LOGIN_FAILED:
       return {
         ...state,
         isLoading: false,
         message: action.payload,
+        status: 409,
       };
     case VERIFICATION_REQUEST:
       return {
@@ -42,11 +45,11 @@ const authReducer = (state = initialState, action) => {
 
     case VERIFICATION_SUCCESS:
       return {
-        ...state,
         verifying: false,
         isLoggedIn: true,
         userData: action.payload,
         message: "verified successfully",
+        status: 200,
       };
 
     case VERIFICATION_FAILED:
@@ -55,10 +58,10 @@ const authReducer = (state = initialState, action) => {
         verifying: false,
         message: action.payload,
         fakeToken: true,
+        status: 409,
       };
       case LOGOUT: {
         return {
-          ...state,
           isLoggedIn: false,
         }
       }
