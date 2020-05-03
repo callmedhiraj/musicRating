@@ -26,7 +26,7 @@ export const loginSuccess = (data) => {
 export const loginFailed = (error) => {
   return {
     type: LOGIN_FAILED,
-    payload: error,
+    payload: error, 
   };
 };
 export const verifyToken = () => {
@@ -70,6 +70,7 @@ export const setLogout = () => {
   return (dispatch) => {
     dispatch(logout());
     localStorage.removeItem('token');
+    dispatch(destroyMessage());
   }
 }
 

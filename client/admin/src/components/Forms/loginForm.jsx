@@ -30,7 +30,13 @@ if(auth?.isLoggedIn ) {
     <Redirect to='/dashboard/' />
   )
 }
-  console.log('here',auth);
+  if(auth?.message === 'Unauthorized Admin') {
+   
+     
+        return <Redirect to='/unauthorized'/>
+     
+  }
+
   return (
     <>
       <div className={classes.loginForm}>

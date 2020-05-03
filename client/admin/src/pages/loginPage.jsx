@@ -24,20 +24,20 @@ export default function LoginPage() {
   }
   return (
     <>
-      <Snackbar anchorOrigin={{vertical: 'top', horizontal: 'center'}} open={auth?.message ? true : false} onClose={setClose} autoHideDuration={3000}>
-        {auth?.message ? (
+    {auth?.message && 
+      <Snackbar anchorOrigin={{vertical: 'top', horizontal: 'center'}} open={auth?.message ? true : false } onClose={setClose} autoHideDuration={3000}>
+        
           <Alert
+          icon={<ErrorOutlineSharp fontSize='inherit' />}
           onClose={setClose}
-            icon={<ErrorOutlineSharp fontSize="inherit" />}
-            severity={auth?.status < 400 ? "sucess" : "warning"}
+            severity={auth?.status < 400 ? "success" : "warning"}
             variant="filled"
           >
             {auth?.message}
           </Alert>
-        ) : (
-          ""
-        )}
+
       </Snackbar>
+      }
 
       <Container>
         <Paper className={classes.root} elevation={5}>

@@ -41,15 +41,16 @@ const authReducer = (state = initialState, action) => {
       };
     case VERIFICATION_REQUEST:
       return {
+        ...state,
         verifying: true,
       };
 
     case VERIFICATION_SUCCESS:
       return {
+        ...state,
         verifying: false,
         isLoggedIn: true,
         userData: action.payload,
-        message: "verified successfully",
         status: 200,
       };
 
@@ -63,12 +64,14 @@ const authReducer = (state = initialState, action) => {
       };
       case LOGOUT: {
         return {
+          ...state,
           isLoggedIn: false,
         }
       }
       case DESTROY_MESSAGE: {
         return {
-          message : "",
+          ...state,
+          message : state.message !== 'Unauthorized Admin' ? '' : 'Unauthorized Admin' ,
         }
       }
     default:

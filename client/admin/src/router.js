@@ -3,10 +3,10 @@ import LoginPage from "./pages/loginPage";
 import SignupPage from "./pages/SignupPage";
 import { Route, Switch, Redirect, useHistory } from "react-router-dom";
 
-
 import { useDispatch } from "react-redux";
 import { fetchUser } from "./Redux/Auth/authActions";
 import Dashboard from "./pages/Dashboard";
+import Unauthorize from "./pages/Unauthorize";
 
 const isAuthenticated = () => {
   const token = localStorage.getItem("token");
@@ -18,22 +18,19 @@ const isAuthenticated = () => {
   }
 };
 
-
-
-
 const AdminRouter = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   useEffect(() => {
-    let token = localStorage.getItem('token');
-    if(token) {
-      dispatch(fetchUser(token))
+    let token = localStorage.getItem("token");
+    if (token) {
+      dispatch(fetchUser(token));
     }
-    if(!token) {
-        history.push('/login')
+    if (!token) {
+      history.push("/login");
     }
     // eslint-disable-next-line
-  },[])
+  }, []);
 
   const PrivateRoute = ({ component: Component, path, ...rest }) => {
     return (
@@ -79,10 +76,8 @@ const AdminRouter = () => {
       <Switch>
         <PublicRoute path="/signup" component={SignupPage} />
         <PublicRoute path="/login" component={LoginPage} />
-              <PrivateRoute path="/dashboard" component={Dashboard} />
-        <Route path="*">
-          <Redirect to="/dashboard"/>
-        </Route>
+        <PublicRoute path="/unauthorized" component={Unauthorize} />
+        <PrivateRoute path="/dashboard" component={Dashboard} />
       </Switch>
     </>
   );
