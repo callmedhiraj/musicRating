@@ -26,7 +26,7 @@ exports.verifyAdmin = async (req, res, next) => {
     }
     if (isUser && !isUser.adminType) {
       res.status(409).json({
-        message: 'unAuthorized Admin',
+        message: 'Unauthorized Admin',
       });
     }
   } catch (error) {

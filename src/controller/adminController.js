@@ -37,6 +37,7 @@ exports.Signup = async (req, res, next) => {
           username,
         }],
       });
+      console.log(username);
       if (findUser) {
         res.status(409).json({
           message: 'User already exists, please log in.',
