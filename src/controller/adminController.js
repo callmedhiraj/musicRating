@@ -1,6 +1,7 @@
 const Joi = require('@hapi/joi');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const gravatar = require('gravatar');
 
 const {
   SECRET_KEY,
@@ -43,11 +44,13 @@ exports.Signup = async (req, res, next) => {
       }
       if (!findUser) {
         const hash = await bcrypt.hashSync(password, 12);
+        const avatar = await gravatar.url(email,{s: '200', r: 'pg', d: '404'});
         const userData = new Admin({
           fullName,
           email,
           password: hash,
           username,
+          avatar,
         });
         const saveData = userData.save();
         if (saveData) {
