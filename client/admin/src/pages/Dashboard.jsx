@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar/Navbar";
-import { Switch, Route, useHistory, Redirect } from "react-router-dom";
-import { makeStyles } from "@material-ui/core";
+import { Switch, Route, useHistory, Link } from "react-router-dom";
+import { makeStyles, Typography, Button } from "@material-ui/core";
 import clsx from "clsx";
 import LeftDrawer from "../components/Drawer/Drawer";
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from "react-redux";
 import { HashLoader } from "react-spinners";
 
 const device = () => {
@@ -17,18 +17,27 @@ const device = () => {
   }
 };
 
-
-
 export default function (props) {
   let history = useHistory();
   const classes = useStyle();
   const [openDrawer, setOpenDrawer] = useState(device());
-  const auth = useSelector(state => state.auth)
-  
-  return (
-    
-    !auth?.userData  ? <HashLoader color='yellow' size={45}/>
-    :
+  const auth = useSelector((state) => state.auth);
+
+  return !auth?.userData ? (
+    <div className={classes.loading}>
+      <HashLoader color="yellow" size={45} />
+      {auth?.fakeToken ? (
+        <>
+          <Typography>Invalid Access Request Detected. </Typography>
+          <Link to="/login">
+            <Button variant='contained' color='secondary' >go to login</Button>{" "}
+          </Link>{" "}
+        </>
+      ) : (
+        ""
+      )}
+    </div>
+  ) : (
     <>
       <div className={clsx(classes.root, { [classes.shift]: openDrawer })}>
         <LeftDrawer openDrawer={openDrawer} />
@@ -57,5 +66,9 @@ const useStyle = makeStyles((theme) => ({
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
     }),
+  },
+  loading: {
+    marginLeft: "48%",
+    marginTop: theme.spacing(25),
   },
 }));

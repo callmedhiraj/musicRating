@@ -13,6 +13,7 @@ const initialState = {
   isLoggedIn: false,
   userData: [],
   message: "",
+  fakeToken: false,
 };
 const authReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -53,9 +54,11 @@ const authReducer = (state = initialState, action) => {
         isLoggedIn: false,
         verifying: false,
         message: action.payload,
+        fakeToken: true,
       };
       case LOGOUT: {
         return {
+          ...state,
           isLoggedIn: false,
         }
       }

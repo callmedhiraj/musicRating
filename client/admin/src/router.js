@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import LoginPage from "./pages/loginPage";
 import SignupPage from "./pages/SignupPage";
-import { Route, Switch, Redirect } from "react-router-dom";
+import { Route, Switch, Redirect, useHistory } from "react-router-dom";
 
 
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { fetchUser } from "./Redux/Auth/authActions";
 import Dashboard from "./pages/Dashboard";
 
@@ -22,11 +22,15 @@ const isAuthenticated = () => {
 
 
 const AdminRouter = () => {
+  const history = useHistory();
   const dispatch = useDispatch();
   useEffect(() => {
     let token = localStorage.getItem('token');
     if(token) {
       dispatch(fetchUser(token))
+    }
+    if(!token) {
+        history.push('/login')
     }
   },[])
 
