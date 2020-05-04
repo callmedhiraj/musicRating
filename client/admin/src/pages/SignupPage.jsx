@@ -13,14 +13,13 @@ import personalInfo from "../assets/svg/signIn.svg";
 import security from "../assets/svg/security.svg";
 import mention from "../assets/svg/mention.svg";
 import { useHistory } from "react-router-dom";
-import { messageDelete } from '../Redux'
+
 
 function step() {
   return [personalInfo, security, mention];
 }
 
 export default function SignupPage(props) {
-  const dispatch = useDispatch()
   const history = useHistory();
   const snack = useSelector((state) => state.snack);
   const classes = useStyle();
