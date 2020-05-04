@@ -56,7 +56,7 @@ exports.Signup = async (req, res, next) => {
         });
         const saveData = userData.save();
         if (saveData) {
-          res.status(200).json({
+          res.status(201).json({
             message: 'User created Successfully 🙌',
           });
         }
