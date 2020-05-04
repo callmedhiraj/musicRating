@@ -74,7 +74,7 @@ const useStyle = makeStyles((theme) => ({
     [theme.breakpoints.down("sm")]: {
       width: "100vw",
       marginTop: theme.spacing(5),
-      marginLeft: 0,
+      marginLeft: '0px',
     },
   },
   adminsvg: {
