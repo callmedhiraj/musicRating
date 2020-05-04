@@ -30,6 +30,9 @@ export default function SignupPage(props) {
   if (snack?.status === 409) {
     history.push("/login");
   }
+  if (snack?.status === 201) {
+    history.push("/login");
+  }
   const [imageStep] = useState(0);
   return (
     <>
