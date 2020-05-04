@@ -9,24 +9,33 @@ import {
   Button,
   Divider,
   Fade,
+  CircularProgress,
+  InputAdornment,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { checkValidUsername, setRequest } from "../../Redux";
+import { debounce } from "lodash";
+import { FaUserCheck, MdError } from "react-icons/all";
 
 function setSteps() {
   return [0, 1, 2];
 }
 export default function SignupForm(props) {
+  const dispatch = useDispatch();
+  const signupData = useSelector((state) => state.signup);
+
   const classes = useStyles();
-  const steps = setSteps();
+  const [steps] = useState(setSteps());
   const [data, setData] = useState({
     fullName: "",
     email: "",
     password: "",
     username: "",
   });
-  const [password, setPassword] = useState('');
-  const [re_Password, setRePassword] = useState('');
+  const [password, setPassword] = useState("");
+  const [re_Password, setRePassword] = useState("");
   const {
     register,
     errors,
@@ -35,26 +44,33 @@ export default function SignupForm(props) {
     setError,
     clearError,
   } = useForm();
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(props.step);
   const handlePassword = (e) => {
     const value = e.target.value;
-    setPassword(value)
-    if( value === re_Password) {
+    setPassword(value);
+    if (value === re_Password) {
       return clearError("rePassword");
     }
   };
   const rePassword = (e) => {
     const value = e.target.value;
-     setRePassword(value)
+    setRePassword(value);
     if (value === password) {
       return clearError("rePassword");
     }
     setError("rePassword", "not match", "Password do not match");
   };
 
-  const handleUsername = (e) => {
-    const value = e.target.value;
+  const handleUsernameDispatch = (value) => {
+    dispatch(checkValidUsername({ username: value }));
   };
+  const handleUsername = debounce(async (data) => {
+    const validate = await triggerValidation(["username"]);
+    console.log(validate);
+    if (validate) {
+      handleUsernameDispatch(data);
+    }
+  }, 1500);
   const handleNext = async (e) => {
     e.preventDefault();
     if (activeStep === steps[0]) {
@@ -82,14 +98,25 @@ export default function SignupForm(props) {
     }
     if (activeStep === steps[2]) {
       const validate = await triggerValidation(["username"]);
+      if (validate) {
+        if (signupData?.username) {
+          let finalData = {
+            ...data,
+            ...signupData?.username,
+          };
+          console.log(finalData);
+          dispatch(setRequest(finalData));
+        }
+      }
     }
   };
- 
+
   const handleBack = (e) => {
     e.preventDefault();
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
     props.setImage((prevImage) => prevImage - 1);
   };
+
   return (
     <>
       <Fade in={true} timeout={1000}>
@@ -200,7 +227,27 @@ export default function SignupForm(props) {
                       minLength: 3,
                       pattern: /^[a-zA-Z0-9]+$/,
                     })}
-                    onChange={handleUsername}
+                    onChange={(e) => handleUsername(e.target.value)}
+                    error={!!errors.username}
+                    helperText={errors.username && "invalid username"}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment>
+                          <>
+                            {signupData?.checkingUsername && (
+                              <CircularProgress size={16} />
+                            )}
+                            {signupData?.validUsername && !errors.username && (
+                              <FaUserCheck fontSize={16} color="green" />
+                            )}
+                            {!signupData?.validUsername &&
+                              !signupData?.checkingUsername && (
+                                <MdError fontSize={12} color="red" />
+                              )}
+                          </>
+                        </InputAdornment>
+                      ),
+                    }}
                   />
                 </FormGroup>
               )}
@@ -231,6 +278,11 @@ export default function SignupForm(props) {
                     className={classes.loginButton}
                     variant="contained"
                     color="primary"
+                    disabled={
+                      !signupData?.validUsername ||
+                      !!errors.username ||
+                      signupData?.checkingUsername
+                    }
                     onClick={handleNext}
                   >
                     Create Account
@@ -264,7 +316,7 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(2),
   },
   formBox: {
-    marginTop: theme.spacing(4),
+    marginTop: theme.spacing(2.9),
   },
   loginButtonHolder: {
     display: "flex",
@@ -279,9 +331,13 @@ const useStyles = makeStyles((theme) => ({
   },
   usernameField: {
     margin: theme.spacing(2),
-    marginTop: theme.spacing(12),
+    paddingBottom: theme.spacing(2),
+    marginTop: theme.spacing(8),
   },
   backButton: {
     left: 0,
+  },
+  signupForm: {
+    height: "inherit",
   },
 }));

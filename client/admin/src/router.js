@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { fetchUser } from "./Redux/Auth/authActions";
 import Dashboard from "./pages/Dashboard";
 import Unauthorize from "./pages/Unauthorize";
+import SuccessSnackbar from "./components/snackbar/snackbar";
 
 const isAuthenticated = () => {
   const token = localStorage.getItem("token");
@@ -73,6 +74,7 @@ const AdminRouter = () => {
 
   return (
     <>
+    <SuccessSnackbar/>
       <Switch>
         <PublicRoute path="/signup" component={SignupPage} />
         <PublicRoute path="/login" component={LoginPage} />

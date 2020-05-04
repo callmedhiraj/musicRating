@@ -1,18 +1,36 @@
 import React, { useState } from "react";
-import { Paper, Container, Grid, makeStyles, Toolbar, Fade } from "@material-ui/core";
+import {
+  Paper,
+  Container,
+  Grid,
+  makeStyles,
+  Toolbar,
+  Fade,
+} from "@material-ui/core";
+import { useSelector, useDispatch } from "react-redux";
 import SignupForm from "../components/Forms/SignupForm";
-import personalInfo from '../assets/svg/signIn.svg';
-import security from '../assets/svg/security.svg';
-import mention from '../assets/svg/mention.svg';
+import personalInfo from "../assets/svg/signIn.svg";
+import security from "../assets/svg/security.svg";
+import mention from "../assets/svg/mention.svg";
+import { useHistory } from "react-router-dom";
+import { messageDelete } from '../Redux'
 
 function step() {
- return [personalInfo,security,mention];
+  return [personalInfo, security, mention];
 }
 
 export default function SignupPage(props) {
+  const dispatch = useDispatch()
+  const history = useHistory();
+  const snack = useSelector((state) => state.snack);
   const classes = useStyle();
   const steps = step();
-  const [image,setImage] = useState(0); 
+  const [image, setImage] = useState(0);
+
+  if (snack?.status === 409) {
+    history.push("/login");
+  }
+  const [imageStep] = useState(0);
   return (
     <>
       <Container>
@@ -21,23 +39,21 @@ export default function SignupPage(props) {
             <Grid item xs={12} sm={7} className={classes.descriptionBox}>
               <Container>
                 <Toolbar className={classes.imageContainer}>
-                { steps[image] &&
-                  <Fade in={!!steps[image]} timeout={3000}>
-                    <img
-                    alt="hello"
-                    className={classes.image}
-                    src={steps[image]}
-                  />
-                  
-                   
-                  </Fade>
-                   }
+                  {steps[image] && (
+                    <Fade in={!!steps[image]} timeout={3000}>
+                      <img
+                        alt="hello"
+                        className={classes.image}
+                        src={steps[image]}
+                      />
+                    </Fade>
+                  )}
                 </Toolbar>
               </Container>
             </Grid>
             <Grid className={classes.loginForm} item xs={12} sm={5}>
               <Container>
-              <SignupForm setImage={setImage} />
+                <SignupForm step={imageStep} setImage={setImage} />
               </Container>
             </Grid>
           </Grid>
@@ -53,12 +69,11 @@ const useStyle = makeStyles((theme) => ({
     marginLeft: theme.spacing(5),
     marginTop: theme.spacing(10),
     height: "60vh",
-    [theme.breakpoints.down('sm')]: {
-      width: '100vw',
+    [theme.breakpoints.down("sm")]: {
+      width: "100vw",
       marginTop: theme.spacing(5),
       marginLeft: 0,
-
-   },
+    },
   },
   adminsvg: {
     height: "60vh",
@@ -67,23 +82,23 @@ const useStyle = makeStyles((theme) => ({
     backgroundColor: "#c52aef",
     color: "white",
     height: "60vh",
-   [theme.breakpoints.down('sm')]: {
-     display: 'none',
-   },
+    [theme.breakpoints.down("sm")]: {
+      display: "none",
+    },
   },
   imageContainer: {
     width: "100%",
     justifyContent: "center",
   },
   loginForm: {
-   color: "blck",
+    color: "blck",
     height: "60vh",
-    [theme.breakpoints.down('sm')]: {
-     width: '100vw',
-   },
+    [theme.breakpoints.down("sm")]: {
+      width: "100vw",
+    },
   },
   image: {
-    height: '55vh',
-    width: '100%'
-   },
+    height: "55vh",
+    width: "100%",
+  },
 }));

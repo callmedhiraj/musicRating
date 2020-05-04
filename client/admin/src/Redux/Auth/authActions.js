@@ -8,6 +8,7 @@ import {
   LOGOUT,
   DESTROY_MESSAGE,
 } from "./authType";
+import { showSnackbar } from "../index";
 import { API } from "../../API_GLOBAL";
 import Axios from "axios";
 
@@ -26,7 +27,7 @@ export const loginSuccess = (data) => {
 export const loginFailed = (error) => {
   return {
     type: LOGIN_FAILED,
-    payload: error, 
+    payload: error,
   };
 };
 export const verifyToken = () => {
@@ -52,27 +53,27 @@ export const verificationFailed = (error) => {
 export const removeMessage = () => {
   return {
     type: DESTROY_MESSAGE,
-  }
-}
+  };
+};
 export const logout = () => {
   return {
-  type: LOGOUT,
-  }
-}
+    type: LOGOUT,
+  };
+};
 
 export const destroyMessage = () => {
   return (dispatch) => {
-    dispatch(removeMessage())
-  }
-}
+    dispatch(removeMessage());
+  };
+};
 
 export const setLogout = () => {
   return (dispatch) => {
     dispatch(logout());
-    localStorage.removeItem('token');
+    localStorage.removeItem("token");
     dispatch(destroyMessage());
-  }
-}
+  };
+};
 
 export const login = (data) => {
   return (dispatch) => {
@@ -83,14 +84,17 @@ export const login = (data) => {
         localStorage.setItem("token", `Bearer ${token}`);
         let finalToken = `Bearer ${token}`;
         dispatch(loginSuccess(res.data.message));
+        dispatch(showSnackbar(res.data.message, res.status));
         dispatch(fetchUser(finalToken));
-        
       })
       .catch((err) => {
         if (err && err.response && err.response.data.message) {
           dispatch(loginFailed(err.response.data.message));
+          dispatch(
+            showSnackbar(err.response.data.message, err.response.status)
+          );
         }
-        if (err && !err.response ) {
+        if (err && !err.response) {
           dispatch(loginFailed(err.message));
         }
       });

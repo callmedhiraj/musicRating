@@ -6,39 +6,14 @@ import {
   makeStyles,
   Toolbar,
   Fade,
-  Snackbar,
 } from "@material-ui/core";
 import AdminSvg from "../assets/svg/admin.svg";
 import LoginForm from "../components/Forms/loginForm";
-import { useSelector, useDispatch } from "react-redux";
-import { Alert } from "@material-ui/lab";
-import { ErrorOutlineSharp } from "@material-ui/icons";
-import { destroyMessage } from '../Redux/Auth/authActions'
-
 export default function LoginPage() {
-  const dispatch = useDispatch();
-  const auth = useSelector((state) => state.auth);
   const classes = useStyle();
-  const setClose = () => {
-    dispatch(destroyMessage());
-  }
+
   return (
     <>
-    {auth?.message && 
-      <Snackbar anchorOrigin={{vertical: 'top', horizontal: 'center'}} open={auth?.message ? true : false } onClose={setClose} autoHideDuration={3000}>
-        
-          <Alert
-          icon={<ErrorOutlineSharp fontSize='inherit' />}
-          onClose={setClose}
-            severity={auth?.status < 400 ? "success" : "warning"}
-            variant="filled"
-          >
-            {auth?.message}
-          </Alert>
-
-      </Snackbar>
-      }
-
       <Container>
         <Paper className={classes.root} elevation={5}>
           <Grid container spacing={3}>
