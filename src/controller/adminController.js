@@ -40,8 +40,9 @@ exports.Signup = async (req, res, next) => {
       console.log(username);
       if (findUser) {
         res.status(409).json({
-          message: 'User already exists, please log in.',
-        });
+          message: `User already exists with email ${findUser.email} , please log in.`,
+          email: findUser.email,
+        }).statusText('email');
       }
       if (!findUser) {
         const hash = await bcrypt.hashSync(password, 12);
@@ -123,3 +124,25 @@ exports.AdminProfile = async (req, res, next) => {
     console.log(error);
   }
 };
+
+
+exports.CheckUsername = async (req, res, next) => {
+  try {
+   const { username } = req.body;
+    const checkUsername = await Admin.findOne({username});
+    console.log(username, checkUsername);
+    if (checkUsername) {
+      res.status(400).json({
+        data: checkUsername.email,
+        message: 'Username already taken.'
+      });
+    }
+    if (!checkUsername) {
+      res.status(200).json({
+        message: 'valid Username',
+      });
+    }
+  } catch (error) {
+    next(error)
+  }
+}

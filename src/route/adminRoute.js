@@ -6,6 +6,7 @@ const {
   Signup,
   Login,
   AdminProfile,
+  CheckUsername
 } = require('../controller/adminController');
 const {
   AddVideo,
@@ -22,6 +23,7 @@ adminRouter.post('/signup', Signup);
 adminRouter.post('/login', verifyAdmin, Login);
 adminRouter.get('/profile', adminAuth, AdminProfile);
 
+adminRouter.post('/checkusername', CheckUsername);
 
 adminRouter.post('/addvideo', adminAuth, AddVideo);
 adminRouter.get('/fetchcomment/:id', adminAuth, youtubeScrape);
