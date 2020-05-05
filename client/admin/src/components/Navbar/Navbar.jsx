@@ -70,7 +70,7 @@ export default function Navbar(props) {
             />
           </FormControl>
           <Typography className={classes.fullName} variant="h6">
-            {userData?.fullName}
+            {userData?.username}
           </Typography>
           <IconButton onClick={handleClick}>
             <Avatar src={userData?.avatar} />

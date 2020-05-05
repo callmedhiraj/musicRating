@@ -49,17 +49,18 @@ export default function SignupForm(props) {
     const value = e.target.value;
     setPassword(value);
     if (value === re_Password) {
-      return clearError("rePassword");
+      return clearError("rePassword") && clearError("password");
     }
+    clearError('password');
   };
   const rePassword = (e) => {
     const value = e.target.value;
     setRePassword(value);
     if (value === password) {
-      return clearError("rePassword");
+      return clearError("rePassword") && clearError("password");
     }
-    setError("rePassword", "not match", "Password do not match");
-  };
+    setError('rePassword')
+  }; 
 
   const handleUsernameDispatch = (value) => {
     dispatch(checkValidUsername({ username: value }));
